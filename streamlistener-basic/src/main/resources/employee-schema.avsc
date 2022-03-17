@@ -1,0 +1,22 @@
+{
+    "type": "record",
+        "name": "Employee",
+        "namespace": "com.baeldung.schema.avro",
+        "fields": [
+        {
+            "name": "id",
+            "type": "int"
+        },
+        {
+            "name": "firstName",
+            "type": "string"
+        },
+        {
+            "name": "lastName",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "type": "string"
+        }]
+}

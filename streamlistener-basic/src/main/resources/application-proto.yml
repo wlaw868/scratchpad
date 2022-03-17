@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true
+      bindings:
+        sample-source:
+          destination: testtock-proto
+        proto:
+          destination: testtock-proto
+        output:
+          destination: xformed-proto
+      kafka:
+         binder:
+           producer-properties:
+             key.serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+             value.serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+             schema.registry.url: http://localhost:8081
+           consumer-properties:
+             key.deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+             value.deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+             schema.registry.url: http://localhost:8081
+             specific.protobuf.value.type: com.baeldung.schema.proto$Employee
+payload: proto

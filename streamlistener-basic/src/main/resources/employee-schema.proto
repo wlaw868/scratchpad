@@ -1,0 +1,11 @@
+syntax = "proto3";
+package protobuf;
+option java_package = "com.baeldung.schema";
+option java_outer_classname = "proto";
+
+message Employee {
+    int32 id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string email = 4;
+}

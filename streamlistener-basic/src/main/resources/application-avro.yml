@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true
+      bindings:
+        sample-source:
+          destination: testtock-avro
+        avro:
+          destination: testtock-avro
+        output:
+          destination: xformed-avro
+      kafka:
+         binder:
+           producer-properties:
+             key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+             value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+             schema.registry.url: http://localhost:8081
+           consumer-properties:
+             key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+             value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+             schema.registry.url: http://localhost:8081
+             specific.avro.reader: true
+payload: avro
