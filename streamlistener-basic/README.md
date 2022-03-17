@@ -17,7 +17,7 @@ To update schema, edit:
 To build:
 
 ```
-% ./mvnw clean package
+% mvn clean package
 ```
 
 ### Dependencies
