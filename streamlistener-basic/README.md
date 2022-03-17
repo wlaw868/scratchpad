@@ -4,7 +4,7 @@
 
 This is a Kafka producer and consumer implementation using Spring Cloud Stream.
 
-It produces test message to 'testtock' topic every second, consumes the same topic, transforms the first name, and produces to 'xformed' topic.
+It produces test message to 'testtock' topic every second, transforms the first name, and produces to 'xformed' topic.
 
 ## Getting Started
 
