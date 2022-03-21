@@ -1,0 +1,49 @@
+syntax = "proto3";
+package protobuf;
+option java_package = "com.life360.gpi.schema";
+option java_outer_classname = "proto";
+
+// SPEED (default) | CODE_SIZE | LITE_RUNTIME
+option optimize_for = SPEED;
+
+message Message {
+  repeated Event events = 1;
+}
+
+message Event {
+  string id = 1;
+  string time = 2;
+  string source = 3;
+  string type = 4;
+  string subject = 5;
+  map<string, Data> data = 6;
+}
+
+message Data {
+  Location location = 1;
+  map<string, ListOfDevice> devices = 2;
+}
+
+message Location {
+  float latitude = 1;
+  float longitude = 2;
+  float altitude = 3;
+  float speed = 4;
+  int32 time = 5;
+  int32 elapsedRealtimeNanos = 6;
+  float horizontalAccuracy = 7;
+  float verticalAccuracy = 8;
+  float speedAccuracy = 9;
+  float course = 10;
+  float courseAccuracy = 11;
+}
+
+message ListOfDevice {
+  repeated Device properties = 1;
+}
+
+message Device {
+  int32 discovery_timestamp = 1;
+  string pduPayload = 2;
+  int32 pduRssi = 3;
+}

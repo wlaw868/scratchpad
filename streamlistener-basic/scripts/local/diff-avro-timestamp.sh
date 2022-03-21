@@ -1,0 +1,5 @@
+LAST_OFFSET=9
+START=`kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic xformed-avro1 --property print.timestamp=true --offset 0 --partition 0 --max-messages 1 | awk -F '[:{]' '{print $2}'` 
+END=`kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic xformed-avro1 --property print.timestamp=true --offset $LAST_OFFSET --partition 0 --max-messages 1 | awk -F '[:{]' '{print $2}'`
+DIFF=$(expr $END - $START)
+echo $DIFF " MS"

@@ -1,0 +1,15 @@
+spring:
+  kafka:
+      bootstrapServers: localhost:9092
+  cloud:
+    stream:
+      bindings:
+        json1:
+          destination: testtock-json1
+        output:
+          destination: xformed-json1
+      kafka:
+         binder:
+           consumer-properties:
+             auto.offset.reset: earliest
+payload: none

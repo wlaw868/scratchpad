@@ -1,0 +1,56 @@
+{
+  "type": "record",
+  "name": "Message",
+  "namespace": "com.life360.gpi.schema.avro",
+  "fields": [
+    {"name": "events", "type": {"type": "array", "items": {
+      "type": "record",
+      "name": "Event",
+      "fields": [
+        {"name": "id", "type": "string"},
+        {"name": "time", "type": "string"},
+        {"name": "source", "type": "string"},
+        {"name": "type", "type": "string"},
+        {"name": "subject", "type": "string"},
+        {"name": "data", "type": {"type": "map", "values": {
+          "type": "record",
+          "name": "Data",
+          "fields": [
+            {"name": "location", "type": {
+              "type": "record",
+              "name": "Location",
+              "fields": [
+                {"name": "latitude", "type": "float"},
+                {"name": "longitude", "type": "float"},
+                {"name": "altitude", "type": "float"},
+                {"name": "speed", "type": "float"},
+                {"name": "time",  "type": "int"},
+                {"name": "elapsedRealtimeNanos", "type": "int"},
+                {"name": "horizontalAccuracy", "type": "float"},
+                {"name": "verticalAccuracy", "type": "float"},
+                {"name": "speedAccuracy", "type": "float"},
+                {"name": "course", "type": "float"},
+                {"name": "courseAccuracy", "type": "float"}
+              ]
+            }},
+            {"name": "devices", "type": {"type": "map", "values": {
+              "type": "record",
+              "name": "ListOfDevice",
+              "fields": [
+                {"name": "properties", "type": {"type": "array", "items": {
+                  "type": "record",
+                  "name": "Device",
+                  "fields": [
+                    {"name": "discovery_timestamp", "type": "int"},
+                    {"name": "pduPayload",  "type": "string"},
+                    {"name": "pduRssi", "type": "int"}
+                  ]
+                }}}
+              ]
+            }}}
+          ]
+        }}}
+      ]
+    }}}
+  ]
+}
