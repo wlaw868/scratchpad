@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: wei-kafka-streams-aggregate-sample
+  cloud:
+    stream:
+      bindings:
+        tileAdded:
+          destination: adornment_added
+        tileRemoved:
+          destination: adornment_deleted
+        accountLinked:
+          destination: provider_account_linked
+        accountUnlinked:
+          destination: provider_account_unlinked
+        brazeEvent:
+          destination: braze_event
+      kafka:
+        streams:
+          binder:
+            configuration:
+              default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+              commit.interval.ms: 1000
+            serdeError: logAndContinue
+          bindings:
+            tileAdded:
+              consumer:
+                configuration:
+                  spring.json.value.default.type: kafka.streams.table.join.TileAdded
+            tileRemoved:
+              consumer:
+                configuration:
+                  spring.json.value.default.type: kafka.streams.table.join.TileRemoved
+            accountLinked:
+              consumer:
+                configuration:
+                  spring.json.value.default.type: kafka.streams.table.join.AccountLinked
+            accountUnlinked:
+              consumer:
+                configuration:
+                  spring.json.value.default.type: kafka.streams.table.join.AccountUnlinked
+            brazeEvent:
+              producer:
+                configuration:
+                  spring.json.value.default.type: kafka.streams.table.join.BrazeEvent
+window.size: 30000
