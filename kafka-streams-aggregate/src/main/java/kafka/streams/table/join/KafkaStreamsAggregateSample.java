@@ -19,6 +19,7 @@ package kafka.streams.table.join;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serdes;
@@ -35,20 +36,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.support.serializer.JsonSerde;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
 @lombok.extern.log4j.Log4j2
-@EnableBinding(MessageBinding.class)
 @SpringBootApplication
 public class KafkaStreamsAggregateSample {
 
     ObjectMapper mapper = new ObjectMapper();
+
+    @Value("${window.size}")
+    int windowSizeMs;
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaStreamsAggregateSample.class, args);
@@ -59,21 +58,11 @@ public class KafkaStreamsAggregateSample {
         return Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore("aggregate"), Serdes.String(), new JsonSerde<>(Aggregate.class, mapper));
     }
 
-    @Component
-    public static class KafkaStreamConsumer {
+    @Bean
+    public Function<KStream<String,TileAdded>,Function<KStream<String,TileRemoved>,Function<KStream<String,AccountLinked>,Function<KStream<String,AccountUnlinked>,KStream<String,BrazeEvent>>>>> process() {
 
-        @Value("${window.size}")
-        int windowSizeMs;
-
-        @StreamListener
-        @SendTo("brazeEvent")
-        public KStream<String,BrazeEvent> aggregate(
-            @Input("tileAdded") KStream<String,TileAdded> tileAddedStream,
-            @Input("tileRemoved") KStream<String,TileRemoved> tileRemovedStream,
-            @Input("accountLinked") KStream<String,AccountLinked> accountLinkedStream,
-            @Input("accountUnlinked") KStream<String,AccountUnlinked> accountUnlinkedStream) {
-
-            return tileAddedStream
+        return tileAddedStream -> ( tileRemovedStream -> ( accountLinkedStream -> ( accountUnlinkedStream -> (
+            tileAddedStream
                 .mapValues(v -> new Brazen(v))
                 .merge(tileRemovedStream.mapValues(v -> new Brazen(v)))
                 .merge(accountLinkedStream.mapValues(v -> new Brazen(v)))
@@ -139,7 +128,7 @@ public class KafkaStreamsAggregateSample {
                     @Override
                     public void close() {}
 
-                }, "aggregate");
-        }
+                }, "aggregate")
+        ))));
     }
 }

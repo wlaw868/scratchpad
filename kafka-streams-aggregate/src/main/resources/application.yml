@@ -4,15 +4,15 @@ spring:
   cloud:
     stream:
       bindings:
-        tileAdded:
+        process-in-0:
           destination: adornment_added
-        tileRemoved:
+        process-in-1:
           destination: adornment_deleted
-        accountLinked:
+        process-in-2:
           destination: provider_account_linked
-        accountUnlinked:
+        process-in-3:
           destination: provider_account_unlinked
-        brazeEvent:
+        process-out-0:
           destination: braze_event
       kafka:
         streams:
@@ -23,24 +23,20 @@ spring:
               commit.interval.ms: 1000
             serdeError: logAndContinue
           bindings:
-            tileAdded:
+            process-in-0:
               consumer:
                 configuration:
                   spring.json.value.default.type: kafka.streams.table.join.TileAdded
-            tileRemoved:
+            process-in-1:
               consumer:
                 configuration:
                   spring.json.value.default.type: kafka.streams.table.join.TileRemoved
-            accountLinked:
+            process-in-2:
               consumer:
                 configuration:
                   spring.json.value.default.type: kafka.streams.table.join.AccountLinked
-            accountUnlinked:
+            process-in-3:
               consumer:
                 configuration:
                   spring.json.value.default.type: kafka.streams.table.join.AccountUnlinked
-            brazeEvent:
-              producer:
-                configuration:
-                  spring.json.value.default.type: kafka.streams.table.join.BrazeEvent
 window.size: 30000
