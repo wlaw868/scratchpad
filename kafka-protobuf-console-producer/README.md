@@ -12,5 +12,9 @@ Maven, Java 11+
 
 ## Usage
 ```
-% java -jar target/kafka-protobuf-console-producer.jar --bootstrap-server localhost:9092 --topic test-topic --property schema.registry.url=http://localhost:8081 --property value.schema.file=./blev1.proto --property parse.headers=true < samples/tile_ble_filtered.json
+% java -jar target/kafka-protobuf-console-producer.jar --bootstrap-server localhost:9092 \
+        --topic test-topic \
+        --property schema.registry.url=http://localhost:8081 \
+        --property value.schema.file=./blev1.proto \
+        --property parse.headers=true < samples/tile_ble_filtered.json
 ```
